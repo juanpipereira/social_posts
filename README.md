@@ -51,8 +51,12 @@ To run the Social Posts App on your device, follow these steps:
     flutter run
     
     ```
-    
+
+
 
 ### Conclusion
 
 The  **Social  Posts App** is a simple yet powerful application that demonstrates how to fetch and display data using Flutter and its ecosystem. With the added **like functionality**, users can interact with posts more effectively
+
+### Demo Video
+https://github.com/user-attachments/assets/07e9f89c-432e-4256-94e1-5ec0f84e166c
