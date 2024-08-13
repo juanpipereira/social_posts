@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/presentation/widgets/error_indicator.dart';
+import '../../../core/presentation/widgets/loading_indicator.dart';
 import '../controllers/posts_controller.dart';
+import '../widgets/post_list_tile.dart';
 
 class PostsScreen extends StatelessWidget {
   const PostsScreen({
@@ -13,8 +16,11 @@ class PostsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).secondaryHeaderColor,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).secondaryHeaderColor,
         title: const Text('Social Posts'),
+        scrolledUnderElevation: 0.0,
       ),
       body: Consumer(
         builder: (_, ref, __) {
@@ -33,126 +39,16 @@ class PostsScreen extends StatelessWidget {
                       right: 8.0,
                       top: 16.0,
                     ),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          15.0,
-                        ),
-                        side: const BorderSide(
-                          color: Colors.green,
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.body,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15.0,
-                          ),
-                          const Row(
-                            children: [
-                              Text(
-                                'Read more',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Icon(Icons.arrow_right_alt_rounded),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 3.0,
-                          ),
-                        ],
-                      ),
-                      title: Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 10.0,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                item.title,
-                                style: const TextStyle(
-                                  fontSize: 24.0,
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              highlightColor: Colors.red.shade100,
-                              icon: Icon(
-                                item.isLiked
-                                    ? Icons.favorite_rounded
-                                    : Icons.favorite_border_rounded,
-                                color: Colors.red,
-                              ),
-                              onPressed: () {
-                                ref
-                                    .read(postsControllerProvider.notifier)
-                                    .toggleLike(item.id);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {},
-                    ),
+                    child: PostListTile(item: item),
                   );
                 },
               );
             },
-            error: (_, __) => Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Sorry!',
-                    style: TextStyle(
-                      fontSize: 32.0,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(
-                    'Posts are not available',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ],
-              ),
+            error: (_, __) => const ErrorIndicator(
+              'Posts are not available',
             ),
-            loading: () => const Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Loading posts..',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  CircularProgressIndicator(),
-                ],
-              ),
+            loading: () => const LoadingIndicator(
+              'Loading posts..',
             ),
           );
         },
